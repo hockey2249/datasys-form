@@ -4,18 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DataSys — New Order</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0d0f14;
-      --surface: #15181f;
-      --border: #23272f;
-      --accent: #4fffb0;
-      --accent-dim: rgba(79,255,176,0.12);
-      --text: #e8eaf0;
-      --muted: #5a6070;
-      --error: #ff5f5f;
-      --radius: 10px;
+      --bg: #f4f6f9;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+      --blue-mid: #bfdbfe;
+      --text: #1e293b;
+      --muted: #64748b;
+      --success: #16a34a;
+      --success-bg: #f0fdf4;
+      --error: #dc2626;
+      --error-bg: #fef2f2;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,140 +28,170 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Mono', monospace;
+      font-family: 'Inter', sans-serif;
       min-height: 100vh;
+      padding: 32px 16px 64px;
+    }
+
+    .page-header {
+      max-width: 720px;
+      margin: 0 auto 28px;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: var(--blue);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
       justify-content: center;
-      padding: 48px 16px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 580px;
-      animation: fadeUp 0.5s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .header { margin-bottom: 36px; }
-
-    .header .eyebrow {
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .header h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: 28px;
+      color: white;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 800;
-      color: var(--text);
-      line-height: 1.1;
+      font-size: 14px;
+      flex-shrink: 0;
     }
+
+    .page-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .page-subtitle { font-size: 13px; color: var(--muted); margin-top: 1px; }
+
+    .stepper {
+      max-width: 720px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .step { display: flex; align-items: center; gap: 8px; flex: 1; }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+      border: 2px solid var(--border);
+      background: var(--white);
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .step.active .step-num { background: var(--blue); border-color: var(--blue); color: white; }
+    .step.done .step-num { background: var(--success); border-color: var(--success); color: white; }
+
+    .step-label { font-size: 12px; font-weight: 500; color: var(--muted); white-space: nowrap; }
+    .step.active .step-label { color: var(--blue); font-weight: 600; }
+    .step.done .step-label { color: var(--success); }
+
+    .step-line { flex: 1; height: 1px; background: var(--border); margin: 0 8px; }
+    .step-line.done { background: var(--success); }
 
     .card {
-      background: var(--surface);
+      max-width: 720px;
+      margin: 0 auto 16px;
+      background: var(--white);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
-      margin-bottom: 16px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
-    .section-label {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
+    .card-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
     }
+
+    .card-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
+    .card-desc { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .card-body { padding: 0 24px 24px; }
 
     .toggle-group {
       display: flex;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 4px;
-      margin-bottom: 24px;
+      padding: 3px;
+      margin-bottom: 20px;
     }
 
     .toggle-btn {
       flex: 1;
-      padding: 10px;
+      padding: 8px 12px;
       background: none;
       border: none;
       color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
       cursor: pointer;
-      border-radius: 7px;
-      transition: all 0.2s;
-      letter-spacing: 0.05em;
+      border-radius: 6px;
+      transition: all 0.15s;
     }
 
-    .toggle-btn.active {
-      background: var(--accent);
-      color: #0d0f14;
-      font-weight: 500;
-    }
+    .toggle-btn.active { background: var(--white); color: var(--blue); box-shadow: var(--shadow); }
 
     .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
 
-    label {
-      display: block;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
+    label { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+    label .req { color: var(--error); margin-left: 2px; }
 
     input, select, textarea {
       width: 100%;
-      background: var(--bg);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      padding: 11px 14px;
-      transition: border-color 0.2s;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      padding: 9px 12px;
+      transition: border-color 0.15s, box-shadow 0.15s;
       outline: none;
       appearance: none;
     }
 
-    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
-    input::placeholder { color: var(--muted); }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+
+    input::placeholder, textarea::placeholder { color: #94a3b8; }
 
     select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a6070' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 36px;
+      background-position: right 12px center;
+      padding-right: 32px;
+      cursor: pointer;
     }
 
-    select option { background: var(--surface); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .loading-row {
+    .field-loading {
       display: flex;
       align-items: center;
       gap: 8px;
-      color: var(--muted);
-      font-size: 12px;
-      padding: 11px 14px;
+      padding: 9px 12px;
       border: 1px solid var(--border);
       border-radius: var(--radius);
+      color: var(--muted);
+      font-size: 13px;
       background: var(--bg);
     }
 
@@ -164,7 +199,7 @@
       width: 14px;
       height: 14px;
       border: 2px solid var(--border);
-      border-top-color: var(--accent);
+      border-top-color: var(--blue);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       flex-shrink: 0;
@@ -172,149 +207,311 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: var(--accent);
-      color: #0d0f14;
-      border: none;
-      border-radius: var(--radius);
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.04em;
-      transition: opacity 0.2s, transform 0.1s;
-      margin-top: 8px;
+    .section-divider {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin: 20px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .submit-btn:hover { opacity: 0.9; }
-    .submit-btn:active { transform: scale(0.99); }
-    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-    .status {
-      padding: 14px 18px;
+    .card-actions {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: none;
+    }
+
+    .btn-primary { background: var(--blue); color: white; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary { background: var(--white); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { background: #15803d; }
+    .btn-success:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .status-banner {
+      max-width: 720px;
+      margin: 0 auto 16px;
+      padding: 12px 16px;
       border-radius: var(--radius);
       font-size: 13px;
-      margin-bottom: 16px;
+      font-weight: 500;
       display: none;
+      align-items: center;
+      gap: 8px;
     }
 
-    .status.success {
-      background: var(--accent-dim);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      display: block;
+    .status-banner.success { background: var(--success-bg); border: 1px solid #bbf7d0; color: var(--success); display: flex; }
+    .status-banner.error { background: var(--error-bg); border: 1px solid #fecaca; color: var(--error); display: flex; }
+
+    .summary-box {
+      background: var(--blue-light);
+      border: 1px solid var(--blue-mid);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: var(--blue);
     }
 
-    .status.error {
-      background: rgba(255,95,95,0.1);
-      border: 1px solid var(--error);
-      color: var(--error);
-      display: block;
+    .summary-box strong { font-weight: 600; }
+
+    .toggle-field {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: border-color 0.15s;
     }
 
+    .toggle-field:hover { border-color: var(--blue); }
+
+    .toggle-field input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--blue);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .toggle-field span { font-size: 13px; font-weight: 500; color: var(--text); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-panel { animation: fadeIn 0.2s ease both; }
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="eyebrow">DataSys 360</div>
-      <h1>New Advertiser<br>Order</h1>
+
+  <div class="page-header">
+    <div class="logo-mark">DS</div>
+    <div>
+      <div class="page-title">New Campaign Order</div>
+      <div class="page-subtitle">DataSys 360 — Sandbox</div>
     </div>
+  </div>
 
-    <div id="status" class="status"></div>
+  <div class="stepper">
+    <div class="step active" id="step-indicator-1">
+      <div class="step-num">1</div>
+      <div class="step-label">Advertiser</div>
+    </div>
+    <div class="step-line" id="line-1"></div>
+    <div class="step" id="step-indicator-2">
+      <div class="step-num">2</div>
+      <div class="step-label">Campaign</div>
+    </div>
+    <div class="step-line" id="line-2"></div>
+    <div class="step" id="step-indicator-3">
+      <div class="step-num">3</div>
+      <div class="step-label">Deployment</div>
+    </div>
+  </div>
 
+  <div class="status-banner" id="status-banner"></div>
+
+  <!-- STEP 1 -->
+  <div id="panel-1" class="step-panel">
     <div class="card">
-      <div class="section-label">Advertiser</div>
-
-      <div class="toggle-group">
-        <button class="toggle-btn active" onclick="setMode('existing')">Select Existing</button>
-        <button class="toggle-btn" onclick="setMode('new')">Create New</button>
+      <div class="card-header">
+        <div class="card-title">Advertiser</div>
+        <div class="card-desc">Select an existing advertiser or create a new one</div>
       </div>
+      <div class="card-body">
+        <div class="toggle-group">
+          <button class="toggle-btn active" onclick="setAdvertiserMode('existing')">Select Existing</button>
+          <button class="toggle-btn" onclick="setAdvertiserMode('new')">Create New</button>
+        </div>
 
-      <div id="existing-section">
-        <div class="field">
-          <label>Advertiser</label>
-          <div id="advertiser-loading" class="loading-row">
-            <div class="spinner"></div>
-            Fetching advertisers...
+        <div id="adv-existing">
+          <div class="field">
+            <label>Advertiser <span class="req">*</span></label>
+            <div id="adv-loading" class="field-loading"><div class="spinner"></div> Fetching advertisers...</div>
+            <select id="adv-select" class="hidden"><option value="">Select an advertiser...</option></select>
           </div>
-          <select id="advertiser-select" class="hidden">
-            <option value="">Select an advertiser...</option>
-          </select>
         </div>
-      </div>
 
-      <div id="new-section" class="hidden">
-        <div class="field">
-          <label>Company Name *</label>
-          <input type="text" id="company_name" placeholder="Acme Corp">
-        </div>
-        <div class="field">
-          <label>Contact Name *</label>
-          <input type="text" id="contact_name" placeholder="Jane Smith">
-        </div>
-        <div class="field">
-          <label>Address *</label>
-          <input type="text" id="address" placeholder="123 Main St">
-        </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>City *</label>
-            <input type="text" id="city" placeholder="Denver">
+        <div id="adv-new" class="hidden">
+          <div class="grid-2">
+            <div class="field"><label>Company Name <span class="req">*</span></label><input type="text" id="adv-company" placeholder="Acme Corp"></div>
+            <div class="field"><label>Contact Name <span class="req">*</span></label><input type="text" id="adv-contact" placeholder="Jane Smith"></div>
           </div>
-          <div class="field">
-            <label>State *</label>
-            <input type="text" id="state" placeholder="CO">
+          <div class="field"><label>Address <span class="req">*</span></label><input type="text" id="adv-address" placeholder="123 Main St"></div>
+          <div class="grid-3">
+            <div class="field"><label>City <span class="req">*</span></label><input type="text" id="adv-city" placeholder="Denver"></div>
+            <div class="field"><label>State <span class="req">*</span></label><input type="text" id="adv-state" placeholder="CO"></div>
+            <div class="field"><label>Zip <span class="req">*</span></label><input type="text" id="adv-zip" placeholder="80202"></div>
           </div>
-        </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Zip *</label>
-            <input type="text" id="zip" placeholder="80202">
-          </div>
-          <div class="field">
-            <label>Phone *</label>
-            <input type="text" id="phone" placeholder="3035551234">
-          </div>
+          <div class="field"><label>Phone <span class="req">*</span></label><input type="text" id="adv-phone" placeholder="3035551234"></div>
         </div>
       </div>
     </div>
+    <div class="card-actions">
+      <button class="btn btn-primary" onclick="nextStep(1)">Continue to Campaign →</button>
+    </div>
+  </div>
 
-    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Submit Order</button>
+  <!-- STEP 2 -->
+  <div id="panel-2" class="step-panel hidden">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Campaign Details</div>
+        <div class="card-desc">Set up the email campaign</div>
+      </div>
+      <div class="card-body">
+        <div id="adv-summary" class="summary-box hidden"></div>
+
+        <div class="grid-2">
+          <div class="field"><label>Campaign Name <span class="req">*</span></label><input type="text" id="camp-name" placeholder="Spring Promo 2026"></div>
+          <div class="field"><label>PO Number <span class="req">*</span></label><input type="text" id="camp-po" placeholder="PO-12345"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Category <span class="req">*</span></label>
+            <select id="camp-category">
+              <option value="">Select category...</option>
+              <option value="1">Retail</option>
+              <option value="2">Automotive</option>
+              <option value="3">Finance</option>
+              <option value="4">Travel</option>
+              <option value="7">CPG Grocery</option>
+              <option value="8">CPG Other</option>
+              <option value="9">Education</option>
+              <option value="10">Entertainment</option>
+              <option value="11">Health</option>
+              <option value="12">Home Improvement</option>
+              <option value="13">Hospitality</option>
+              <option value="14">Non Profit</option>
+              <option value="15">Political</option>
+              <option value="16">Professional Services</option>
+              <option value="6">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Count <span class="req">*</span></label>
+            <div id="count-loading" class="field-loading"><div class="spinner"></div> Fetching counts...</div>
+            <select id="camp-count" class="hidden"><option value="">Select count...</option></select>
+          </div>
+        </div>
+
+        <div class="field"><label>Quantity <span class="req">*</span></label><input type="number" id="camp-quantity" placeholder="5000"></div>
+
+        <div class="section-divider">Options</div>
+        <div class="grid-2">
+          <label class="toggle-field"><input type="checkbox" id="camp-postal"><span>Require Postal Address</span></label>
+          <label class="toggle-field"><input type="checkbox" id="camp-hashed"><span>Require Hashed Email</span></label>
+        </div>
+
+        <div class="section-divider">Test Seeds</div>
+        <div class="grid-3">
+          <div class="field"><label>Email <span class="req">*</span></label><input type="email" id="test-seed-email" placeholder="test@example.com"></div>
+          <div class="field"><label>First Name</label><input type="text" id="test-seed-fname" placeholder="Jane"></div>
+          <div class="field"><label>Last Name</label><input type="text" id="test-seed-lname" placeholder="Smith"></div>
+        </div>
+
+        <div class="section-divider">Live Seeds</div>
+        <div class="grid-3">
+          <div class="field"><label>Email <span class="req">*</span></label><input type="email" id="live-seed-email" placeholder="live@example.com"></div>
+          <div class="field"><label>First Name</label><input type="text" id="live-seed-fname" placeholder="Jane"></div>
+          <div class="field"><label>Last Name</label><input type="text" id="live-seed-lname" placeholder="Smith"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-actions">
+      <button class="btn btn-secondary" onclick="goToStep(1)">← Back</button>
+      <button class="btn btn-primary" onclick="nextStep(2)">Continue to Deployment →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div id="panel-3" class="step-panel hidden">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Deployment Details</div>
+        <div class="card-desc">Configure the email deployment</div>
+      </div>
+      <div class="card-body">
+        <div id="camp-summary" class="summary-box hidden"></div>
+
+        <div class="grid-2">
+          <div class="field"><label>Broadcast Date <span class="req">*</span></label><input type="date" id="dep-date"></div>
+          <div class="field"><label>PO Number</label><input type="text" id="dep-po" placeholder="PO-12345"></div>
+        </div>
+        <div class="field"><label>Subject Line <span class="req">*</span></label><input type="text" id="dep-subject" placeholder="Don't miss our spring sale 🌸"></div>
+        <div class="field"><label>Preview Line <span class="req">*</span></label><input type="text" id="dep-preview" placeholder="Exclusive deals inside..."></div>
+        <div class="field"><label>From Line <span class="req">*</span></label><input type="text" id="dep-from" placeholder="Acme Corp <hello@acmecorp.com>"></div>
+        <div class="field"><label>Notes</label><textarea id="dep-notes" rows="3" placeholder="Any additional notes..."></textarea></div>
+
+        <div class="section-divider">Options</div>
+        <div class="grid-2">
+          <label class="toggle-field"><input type="checkbox" id="dep-draft"><span>Save as Draft</span></label>
+          <label class="toggle-field"><input type="checkbox" id="dep-address"><span>Has Address</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="card-actions">
+      <button class="btn btn-secondary" onclick="goToStep(2)">← Back</button>
+      <button class="btn btn-success" id="submit-btn" onclick="handleSubmit()">✓ Submit Order</button>
+    </div>
   </div>
 
   <script>
     const N8N_BASE = 'https://n8n-qa.int.npd.adcell.team/webhook';
     const N8N_GET_ADVERTISERS = `${N8N_BASE}/datasys-get-advertisers`;
-    const N8N_WEBHOOK = `${N8N_BASE}/datasys-advertiser`;
+    const N8N_GET_COUNTS = `${N8N_BASE}/datasys-get-counts`;
+    const N8N_SUBMIT = `${N8N_BASE}/datasys-advertiser`;
+    const HIERARCHY = { admin_id: 1552, manager_id: 1655, user_id: 2393 };
 
-    const HIERARCHY = {
-      admin_id: 1552,
-      manager_id: 1655,
-      user_id: 2393
-    };
+    let currentStep = 1;
+    let advertiserMode = 'existing';
+    let state = {};
 
-    let mode = 'existing';
+    fetchAdvertisers();
+    fetchCounts();
 
-    function setMode(m) {
-      mode = m;
+    function setAdvertiserMode(m) {
+      advertiserMode = m;
       document.querySelectorAll('.toggle-btn').forEach((btn, i) => {
         btn.classList.toggle('active', (i === 0 && m === 'existing') || (i === 1 && m === 'new'));
       });
-      document.getElementById('existing-section').classList.toggle('hidden', m !== 'existing');
-      document.getElementById('new-section').classList.toggle('hidden', m !== 'new');
+      document.getElementById('adv-existing').classList.toggle('hidden', m !== 'existing');
+      document.getElementById('adv-new').classList.toggle('hidden', m !== 'new');
     }
 
     async function fetchAdvertisers() {
       try {
         const res = await fetch(N8N_GET_ADVERTISERS);
         const data = await res.json();
-        const select = document.getElementById('advertiser-select');
-        const loading = document.getElementById('advertiser-loading');
-
+        const select = document.getElementById('adv-select');
+        const loading = document.getElementById('adv-loading');
         if (data && data.length > 0) {
           data.forEach(adv => {
             const opt = document.createElement('option');
@@ -322,74 +519,189 @@
             opt.textContent = `${adv.advertiser_id} — ${adv.company_name}`;
             select.appendChild(opt);
           });
-        } else {
-          const opt = document.createElement('option');
-          opt.textContent = 'No advertisers found';
-          select.appendChild(opt);
         }
-
         loading.classList.add('hidden');
         select.classList.remove('hidden');
       } catch (err) {
-        document.getElementById('advertiser-loading').innerHTML = '⚠ Failed to load advertisers';
+        document.getElementById('adv-loading').innerHTML = '⚠ Failed to load advertisers';
+      }
+    }
+
+    async function fetchCounts() {
+      try {
+        const res = await fetch(N8N_GET_COUNTS);
+        const data = await res.json();
+        const select = document.getElementById('camp-count');
+        const loading = document.getElementById('count-loading');
+        if (data && data.length > 0) {
+          data.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.count_id;
+            opt.textContent = `${c.name} (${c.count_id}) — ${Number(c.quantity).toLocaleString()}`;
+            select.appendChild(opt);
+          });
+        }
+        loading.classList.add('hidden');
+        select.classList.remove('hidden');
+      } catch (err) {
+        document.getElementById('count-loading').innerHTML = '⚠ Failed to load counts';
+      }
+    }
+
+    function goToStep(n) {
+      document.getElementById(`panel-${currentStep}`).classList.add('hidden');
+      document.getElementById(`panel-${n}`).classList.remove('hidden');
+      for (let i = 1; i <= 3; i++) {
+        const ind = document.getElementById(`step-indicator-${i}`);
+        ind.classList.remove('active', 'done');
+        if (i < n) ind.classList.add('done');
+        if (i === n) ind.classList.add('active');
+        const numEl = ind.querySelector('.step-num');
+        numEl.textContent = i < n ? '✓' : i;
+      }
+      for (let i = 1; i <= 2; i++) {
+        document.getElementById(`line-${i}`).classList.toggle('done', i < n);
+      }
+      currentStep = n;
+      clearStatus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextStep(from) {
+      if (from === 1) {
+        if (advertiserMode === 'existing') {
+          const sel = document.getElementById('adv-select');
+          if (!sel.value) return showError('Please select an advertiser.');
+          state.advertiser_id = parseInt(sel.value);
+          state.advertiser_name = sel.options[sel.selectedIndex].text;
+          state.advertiser_mode = 'existing';
+        } else {
+          const fields = { 'adv-company': 'Company Name', 'adv-contact': 'Contact Name', 'adv-address': 'Address', 'adv-city': 'City', 'adv-state': 'State', 'adv-zip': 'Zip', 'adv-phone': 'Phone' };
+          for (const [id, label] of Object.entries(fields)) {
+            if (!document.getElementById(id).value.trim()) return showError(`${label} is required.`);
+          }
+          state.advertiser_mode = 'new';
+          state.company_name = document.getElementById('adv-company').value.trim();
+          state.contact_name = document.getElementById('adv-contact').value.trim();
+          state.address = document.getElementById('adv-address').value.trim();
+          state.city = document.getElementById('adv-city').value.trim();
+          state.adv_state = document.getElementById('adv-state').value.trim();
+          state.zip = document.getElementById('adv-zip').value.trim();
+          state.phone = document.getElementById('adv-phone').value.trim();
+        }
+        const el = document.getElementById('adv-summary');
+        el.innerHTML = `<strong>Advertiser:</strong> ${state.advertiser_mode === 'existing' ? state.advertiser_name : state.company_name}`;
+        el.classList.remove('hidden');
+        goToStep(2);
+
+      } else if (from === 2) {
+        const campName = document.getElementById('camp-name').value.trim();
+        const campPO = document.getElementById('camp-po').value.trim();
+        const category = document.getElementById('camp-category').value;
+        const count = document.getElementById('camp-count').value;
+        const quantity = document.getElementById('camp-quantity').value.trim();
+        const testEmail = document.getElementById('test-seed-email').value.trim();
+        const liveEmail = document.getElementById('live-seed-email').value.trim();
+
+        if (!campName) return showError('Campaign Name is required.');
+        if (!campPO) return showError('PO Number is required.');
+        if (!category) return showError('Please select a Category.');
+        if (!count) return showError('Please select a Count.');
+        if (!quantity) return showError('Quantity is required.');
+        if (!testEmail) return showError('Test Seed Email is required.');
+        if (!liveEmail) return showError('Live Seed Email is required.');
+
+        state.campaign_name = campName;
+        state.camp_po = campPO;
+        state.category_id = parseInt(category);
+        state.count_id = parseInt(count);
+        state.quantity = parseInt(quantity);
+        state.require_postal = document.getElementById('camp-postal').checked ? 1 : 0;
+        state.require_hashed_email = document.getElementById('camp-hashed').checked ? 1 : 0;
+        state.test_seeds = [{ email: testEmail, firstname: document.getElementById('test-seed-fname').value.trim(), lastname: document.getElementById('test-seed-lname').value.trim() }];
+        state.live_seeds = [{ email: liveEmail, firstname: document.getElementById('live-seed-fname').value.trim(), lastname: document.getElementById('live-seed-lname').value.trim() }];
+
+        const el = document.getElementById('camp-summary');
+        el.innerHTML = `<strong>Campaign:</strong> ${campName} &nbsp;|&nbsp; <strong>Count:</strong> ${document.getElementById('camp-count').options[document.getElementById('camp-count').selectedIndex].text}`;
+        el.classList.remove('hidden');
+        goToStep(3);
       }
     }
 
     async function handleSubmit() {
       const btn = document.getElementById('submit-btn');
-      const status = document.getElementById('status');
-      status.className = 'status';
-      status.textContent = '';
+      const depDate = document.getElementById('dep-date').value;
+      const subject = document.getElementById('dep-subject').value.trim();
+      const preview = document.getElementById('dep-preview').value.trim();
+      const fromLine = document.getElementById('dep-from').value.trim();
+
+      if (!depDate) return showError('Broadcast Date is required.');
+      if (!subject) return showError('Subject Line is required.');
+      if (!preview) return showError('Preview Line is required.');
+      if (!fromLine) return showError('From Line is required.');
+
       btn.disabled = true;
       btn.textContent = 'Submitting...';
 
+      const payload = {
+        ...HIERARCHY,
+        advertiser_mode: state.advertiser_mode,
+        ...(state.advertiser_mode === 'existing'
+          ? { advertiser_id: state.advertiser_id, advertiser_name: state.advertiser_name }
+          : { company_name: state.company_name, contact_name: state.contact_name, address: state.address, city: state.city, state: state.adv_state, zip: state.zip, phone: state.phone }
+        ),
+        campaign_name: state.campaign_name,
+        camp_po: state.camp_po,
+        category_id: state.category_id,
+        count_id: state.count_id,
+        quantity: state.quantity,
+        require_postal: state.require_postal,
+        require_hashed_email: state.require_hashed_email,
+        test_seeds: state.test_seeds,
+        live_seeds: state.live_seeds,
+        is_draft: document.getElementById('dep-draft').checked ? 1 : 0,
+        broadcast_date: depDate,
+        subject_line: subject,
+        preview_line: preview,
+        from_line: fromLine,
+        notes: document.getElementById('dep-notes').value.trim(),
+        dep_po: document.getElementById('dep-po').value.trim(),
+        has_address: document.getElementById('dep-address').checked ? 1 : 0
+      };
+
       try {
-        let payload = { mode };
-
-        if (mode === 'existing') {
-          const sel = document.getElementById('advertiser-select');
-          if (!sel.value) throw new Error('Please select an advertiser.');
-          payload.advertiser_id = parseInt(sel.value);
-          payload.advertiser_name = sel.options[sel.selectedIndex].text;
-        } else {
-          const fields = ['company_name', 'contact_name', 'address', 'city', 'state', 'zip', 'phone'];
-          for (const f of fields) {
-            const val = document.getElementById(f).value.trim();
-            if (!val) throw new Error(`${f.replace('_', ' ')} is required.`);
-            payload[f] = val;
-          }
-          payload = { ...payload, ...HIERARCHY };
-        }
-
-        const res = await fetch(N8N_WEBHOOK, {
+        const res = await fetch(N8N_SUBMIT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-
-        if (!res.ok) throw new Error('Webhook failed. Please try again.');
-
-        status.className = 'status success';
-        status.textContent = mode === 'existing'
-          ? `✅ Order submitted for advertiser ${payload.advertiser_id}`
-          : '✅ New advertiser submitted successfully!';
-
-        if (mode === 'new') {
-          ['company_name','contact_name','address','city','state','zip','phone'].forEach(f => {
-            document.getElementById(f).value = '';
-          });
-        }
-
+        if (!res.ok) throw new Error('Submission failed. Please try again.');
+        showSuccess('✓ Order submitted successfully! Check #n8n-automation-datasys in Slack for confirmation.');
+        btn.textContent = '✓ Submitted';
       } catch (err) {
-        status.className = 'status error';
-        status.textContent = `⚠ ${err.message}`;
-      } finally {
+        showError(err.message);
         btn.disabled = false;
-        btn.textContent = 'Submit Order';
+        btn.textContent = '✓ Submit Order';
       }
     }
 
-    fetchAdvertisers();
+    function showError(msg) {
+      const el = document.getElementById('status-banner');
+      el.className = 'status-banner error';
+      el.textContent = '⚠ ' + msg;
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showSuccess(msg) {
+      const el = document.getElementById('status-banner');
+      el.className = 'status-banner success';
+      el.textContent = msg;
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function clearStatus() {
+      document.getElementById('status-banner').className = 'status-banner';
+    }
   </script>
 </body>
 </html>
