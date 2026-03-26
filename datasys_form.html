@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataSys — New Order</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #15181f;
+      --border: #23272f;
+      --accent: #4fffb0;
+      --accent-dim: rgba(79,255,176,0.12);
+      --text: #e8eaf0;
+      --muted: #5a6070;
+      --error: #ff5f5f;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 580px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      margin-bottom: 36px;
+    }
+
+    .header .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* Toggle */
+    .toggle-group {
+      display: flex;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 10px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 7px;
+      transition: all 0.2s;
+      letter-spacing: 0.05em;
+    }
+
+    .toggle-btn.active {
+      background: var(--accent);
+      color: #0d0f14;
+      font-weight: 500;
+    }
+
+    /* Form fields */
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      padding: 11px 14px;
+      transition: border-color 0.2s;
+      outline: none;
+      appearance: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    input::placeholder { color: var(--muted); }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a6070' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    select option { background: var(--surface); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .loading-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+    }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Submit */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #0d0f14;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: opacity 0.2s, transform 0.1s;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover { opacity: 0.9; }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Status */
+    .status {
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .status.success {
+      background: var(--accent-dim);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      display: block;
+    }
+
+    .status.error {
+      background: rgba(255,95,95,0.1);
+      border: 1px solid var(--error);
+      color: var(--error);
+      display: block;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="eyebrow">DataSys 360</div>
+      <h1>New Advertiser<br>Order</h1>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <div class="card">
+      <div class="section-label">Advertiser</div>
+
+      <div class="toggle-group">
+        <button class="toggle-btn active" onclick="setMode('existing')">Select Existing</button>
+        <button class="toggle-btn" onclick="setMode('new')">Create New</button>
+      </div>
+
+      <!-- Existing advertiser -->
+      <div id="existing-section">
+        <div class="field">
+          <label>Advertiser</label>
+          <div id="advertiser-loading" class="loading-row">
+            <div class="spinner"></div>
+            Fetching advertisers...
+          </div>
+          <select id="advertiser-select" class="hidden">
+            <option value="">Select an advertiser...</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- New advertiser -->
+      <div id="new-section" class="hidden">
+        <div class="field">
+          <label>Company Name *</label>
+          <input type="text" id="company_name" placeholder="Acme Corp">
+        </div>
+        <div class="field">
+          <label>Contact Name *</label>
+          <input type="text" id="contact_name" placeholder="Jane Smith">
+        </div>
+        <div class="field">
+          <label>Address *</label>
+          <input type="text" id="address" placeholder="123 Main St">
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>City *</label>
+            <input type="text" id="city" placeholder="Denver">
+          </div>
+          <div class="field">
+            <label>State *</label>
+            <input type="text" id="state" placeholder="CO">
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Zip *</label>
+            <input type="text" id="zip" placeholder="80202">
+          </div>
+          <div class="field">
+            <label>Phone *</label>
+            <input type="text" id="phone" placeholder="3035551234">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Submit Order</button>
+  </div>
+
+  <script>
+    const API_KEY = 'dbbc92c38c2020a4c8a5d64657ddc8bb1f59ac5f6550c9dcf3b6346c641b5f3f';
+    const DATASYS_BASE = 'https://sandbox.datasys360.com/api/v3';
+    const N8N_WEBHOOK = 'YOUR_N8N_WEBHOOK_URL_HERE';
+
+    const HIERARCHY = {
+      admin_id: 1552,
+      manager_id: 1655,
+      user_id: 2393
+    };
+
+    let mode = 'existing';
+
+    function setMode(m) {
+      mode = m;
+      document.querySelectorAll('.toggle-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', (i === 0 && m === 'existing') || (i === 1 && m === 'new'));
+      });
+      document.getElementById('existing-section').classList.toggle('hidden', m !== 'existing');
+      document.getElementById('new-section').classList.toggle('hidden', m !== 'new');
+    }
+
+    async function fetchAdvertisers() {
+      try {
+        const res = await fetch(`${DATASYS_BASE}/advertisers`, {
+          headers: { 'X-Api-Key': API_KEY }
+        });
+        const data = await res.json();
+        const select = document.getElementById('advertiser-select');
+        const loading = document.getElementById('advertiser-loading');
+
+        if (data.status === 1 && data.data.length > 0) {
+          data.data.forEach(adv => {
+            const opt = document.createElement('option');
+            opt.value = adv.advertiser_id;
+            opt.textContent = `${adv.advertiser_id} — ${adv.company_name}`;
+            select.appendChild(opt);
+          });
+        } else {
+          const opt = document.createElement('option');
+          opt.textContent = 'No advertisers found';
+          select.appendChild(opt);
+        }
+
+        loading.classList.add('hidden');
+        select.classList.remove('hidden');
+      } catch (err) {
+        document.getElementById('advertiser-loading').innerHTML = '⚠ Failed to load advertisers';
+      }
+    }
+
+    async function handleSubmit() {
+      const btn = document.getElementById('submit-btn');
+      const status = document.getElementById('status');
+      status.className = 'status';
+      status.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      try {
+        let payload = { mode };
+
+        if (mode === 'existing') {
+          const sel = document.getElementById('advertiser-select');
+          if (!sel.value) throw new Error('Please select an advertiser.');
+          payload.advertiser_id = parseInt(sel.value);
+          payload.advertiser_name = sel.options[sel.selectedIndex].text;
+        } else {
+          const fields = ['company_name', 'contact_name', 'address', 'city', 'state', 'zip', 'phone'];
+          for (const f of fields) {
+            const val = document.getElementById(f).value.trim();
+            if (!val) throw new Error(`${f.replace('_', ' ')} is required.`);
+            payload[f] = val;
+          }
+          payload = { ...payload, ...HIERARCHY };
+        }
+
+        const res = await fetch(N8N_WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error('Webhook failed. Please try again.');
+
+        status.className = 'status success';
+        status.textContent = mode === 'existing'
+          ? `✅ Order submitted for advertiser ${payload.advertiser_id}`
+          : '✅ New advertiser submitted successfully!';
+
+        // Reset form
+        if (mode === 'new') {
+          ['company_name','contact_name','address','city','state','zip','phone'].forEach(f => {
+            document.getElementById(f).value = '';
+          });
+        }
+
+      } catch (err) {
+        status.className = 'status error';
+        status.textContent = `⚠ ${err.message}`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Submit Order';
+      }
+    }
+
+    fetchAdvertisers();
+  </script>
+</body>
+</html>
